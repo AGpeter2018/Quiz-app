@@ -53,7 +53,7 @@ const QueFetch = async function () {
       let counterQue = `   <span
             ><p>${index + 1}</p>
             of
-            <p>${[index].length}</p>
+            <p>${Questions.length}</p>
             questions</span
           >`;
       queText.innerHTML = queTag;

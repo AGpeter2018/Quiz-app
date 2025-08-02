@@ -238,6 +238,21 @@ section .option-list .option:hover {
   border-color: #a42834;
 }
 
+.option-list .option.correct {
+  color: #155224;
+  background: #d4edda;
+  border-color: #c3e6cb;
+}
+.option-list .option.incorrect {
+  color: #721c24;
+  background: #f8d7da;
+  border-color: #f5c6c6;
+}
+
+.option-list .option.disable {
+  pointer-events: none;
+}
+
 .quiz-box footer {
   height: 60px;
   width: 100%;

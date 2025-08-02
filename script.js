@@ -4,6 +4,7 @@ const infoBox = document.querySelector(".info-box");
 const quizBox = document.querySelector(".quiz-box");
 const quitBtn = document.querySelector(".quit");
 const continueBtn = document.querySelector(".restart");
+const option = document.querySelector(".option-list");
 
 startBtn.addEventListener("click", () => {
   startBtn.style.opacity = "0";
@@ -41,7 +42,7 @@ const QueFetch = async function () {
 
     const queBody = function (index) {
       const queText = document.querySelector(".que-text");
-      const option = document.querySelector(".option-list");
+
       const quizNum = document.querySelector(".total-que");
       // Show question number and total
       let queTag = `<div class="question-number"> ${index + 1}.</div><span>${
@@ -59,6 +60,30 @@ const QueFetch = async function () {
       queText.innerHTML = queTag;
       option.innerHTML = optionTag;
       quizNum.innerHTML = counterQue;
+
+      setOptionListeners();
+      let correct_answer = Questions[index].answer;
+      console.log(correct_answer);
+      // Separate function to set event listeners for options
+      function setOptionListeners() {
+        const optionList = document.querySelectorAll(".option");
+        optionList.forEach((el) => {
+          el.addEventListener("click", (e) => {
+            const optionClick = e.currentTarget.textContent.trim();
+            // console.log(optionClick);
+            if (correct_answer === optionClick) {
+              el.classList.add("correct");
+              console.log("correct");
+            } else {
+              el.classList.add("incorrect");
+              console.log("wrong");
+            }
+            Array.from(option.children).forEach((child) => {
+              child.classList.add("disable");
+            });
+          });
+        });
+      }
     };
 
     nextBtn.addEventListener("click", () => {

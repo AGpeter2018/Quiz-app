@@ -29,9 +29,10 @@ const QueFetch = async function () {
       "https://opentdb.com/api.php?amount=50&category=18&difficulty=medium"
     );
     const data = await response.json();
+    console.log(data);
     Questions = data.results.map((q) => ({
       question: q.question,
-      // OpenTDB provides correct and incorrect answers separately
+
       options: shuffle([q.correct_answer, ...q.incorrect_answers]),
       answer: q.correct_answer,
     }));
@@ -41,18 +42,31 @@ const QueFetch = async function () {
     const queBody = function (index) {
       const queText = document.querySelector(".que-text");
       const option = document.querySelector(".option-list");
-      let queTag = `<span>${Questions[index].question}</span>`;
-      queText.innerHTML = queTag;
+      const quizNum = document.querySelector(".total-que");
+      // Show question number and total
+      let queTag = `<div class="question-number"> ${index + 1}.</div><span>${
+        Questions[index].question
+      }</span>`;
       let optionTag = Questions[index].options
-        .map((opt) => `<div class="option">${opt} <span></span></div>`)
+        .map((opt, i) => `<div class="option">${opt} <span></span></div>`)
         .join("");
+      let counterQue = `   <span
+            ><p>${index + 1}</p>
+            of
+            <p>${[index].length}</p>
+            questions</span
+          >`;
+      queText.innerHTML = queTag;
       option.innerHTML = optionTag;
+      quizNum.innerHTML = counterQue;
     };
 
     nextBtn.addEventListener("click", () => {
       Que_count++;
-      if (Que_count < Questions.length) {
+      if (Que_count < Questions.length - 1) {
         queBody(Que_count);
+      } else {
+        console.log("question completed");
       }
     });
 

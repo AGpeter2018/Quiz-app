@@ -6,6 +6,7 @@ const quitBtn = document.querySelector(".quit");
 const continueBtn = document.querySelector(".restart");
 const option = document.querySelector(".option-list");
 const timerCount = document.querySelector(".timer-sec");
+const counterBaseLine = document.querySelector(".time-line");
 
 startBtn.addEventListener("click", () => {
   startBtn.style.opacity = "0";
@@ -105,7 +106,9 @@ const QueFetch = async function () {
     };
     let Que_count = 0;
     let counter;
+    let counterLine = 0;
     let countTimer = 15;
+    let widthValue = 0;
 
     // set timer for the quiz
     const setTimer = function (time) {
@@ -113,13 +116,30 @@ const QueFetch = async function () {
         timerCount.textContent = time;
         time--;
         if (time < 0) {
-          clearInterval(countTimer);
-          timerCount.textContent = "00";
+          clearInterval(counter);
+          timerCount.textContent = "0";
+        }
+        let addZero = timerCount.textContent;
+        if (time < 9) {
+          timerCount.textContent = `0${addZero}`;
         }
       };
       counter = setInterval(timer, 1000);
     };
     setTimer(countTimer);
+    // counter baseline
+    const setTimerBaseline = function (time) {
+      const timer = function () {
+        time += 1;
+        counterBaseLine.style.width = `${time}px`;
+
+        if (time > 549) {
+          clearInterval(counterLine);
+        }
+      };
+      counterLine = setInterval(timer, 29);
+    };
+    setTimerBaseline(0);
 
     nextBtn.addEventListener("click", () => {
       Que_count++;
@@ -127,6 +147,8 @@ const QueFetch = async function () {
         queBody(Que_count);
         clearInterval(counter);
         setTimer(countTimer);
+        clearInterval(counterLine);
+        setTimerBaseline(widthValue);
       } else {
         console.log("question completed");
       }

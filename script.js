@@ -5,6 +5,7 @@ const quizBox = document.querySelector(".quiz-box");
 const quitBtn = document.querySelector(".quit");
 const continueBtn = document.querySelector(".restart");
 const option = document.querySelector(".option-list");
+const timerCount = document.querySelector(".timer-sec");
 
 startBtn.addEventListener("click", () => {
   startBtn.style.opacity = "0";
@@ -37,7 +38,7 @@ const QueFetch = async function () {
       options: shuffle([q.correct_answer, ...q.incorrect_answers]),
       answer: q.correct_answer,
     }));
-    let Que_count = 0;
+
     const nextBtn = quizBox.querySelector(".next-btn");
 
     const queBody = function (index) {
@@ -51,12 +52,17 @@ const QueFetch = async function () {
       let optionTag = Questions[index].options
         .map((opt, i) => `<div class="option">${opt} <span></span></div>`)
         .join("");
+
+      let tickIcon = `<div class="icon tick"><i class="fas fa-check"><i></div>`;
+      let crossIcon = `<div class="icon cross"><i class="fas fa-times"><i></div>`;
+
       let counterQue = `   <span
             ><p>${index + 1}</p>
             of
             <p>${Questions.length}</p>
             questions</span
           >`;
+
       queText.innerHTML = queTag;
       option.innerHTML = optionTag;
       quizNum.innerHTML = counterQue;
@@ -64,20 +70,32 @@ const QueFetch = async function () {
       setOptionListeners();
       let correct_answer = Questions[index].answer;
       console.log(correct_answer);
+
       // Separate function to set event listeners for options
       function setOptionListeners() {
         const optionList = document.querySelectorAll(".option");
         optionList.forEach((el) => {
           el.addEventListener("click", (e) => {
+            clearInterval(counter);
             const optionClick = e.currentTarget.textContent.trim();
             // console.log(optionClick);
             if (correct_answer === optionClick) {
               el.classList.add("correct");
+              el.insertAdjacentHTML("beforeend", tickIcon);
               console.log("correct");
             } else {
               el.classList.add("incorrect");
+              el.insertAdjacentHTML("beforeend", crossIcon);
               console.log("wrong");
+              // Also highlight the correct answer
+              Array.from(option.children).forEach((child) => {
+                if (child.textContent.trim() === correct_answer) {
+                  child.classList.add("correct");
+                  child.insertAdjacentHTML("beforeend", tickIcon);
+                }
+              });
             }
+            // when answer is selected others cannot be selected
             Array.from(option.children).forEach((child) => {
               child.classList.add("disable");
             });
@@ -85,11 +103,25 @@ const QueFetch = async function () {
         });
       }
     };
+    let Que_count = 0;
+    let counter;
+    let countTimer = 15;
+
+    const setTimer = function (time) {
+      const timer = function () {
+        timerCount.textContent = time;
+        time--;
+      };
+      counter = setInterval(timer, 1000);
+    };
+    setTimer(countTimer);
 
     nextBtn.addEventListener("click", () => {
       Que_count++;
       if (Que_count < Questions.length - 1) {
         queBody(Que_count);
+        clearInterval(counter);
+        setTimer(countTimer);
       } else {
         console.log("question completed");
       }

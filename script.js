@@ -107,10 +107,15 @@ const QueFetch = async function () {
     let counter;
     let countTimer = 15;
 
+    // set timer for the quiz
     const setTimer = function (time) {
       const timer = function () {
         timerCount.textContent = time;
         time--;
+        if (time < 0) {
+          clearInterval(countTimer);
+          timerCount.textContent = "00";
+        }
       };
       counter = setInterval(timer, 1000);
     };

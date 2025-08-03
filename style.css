@@ -191,6 +191,15 @@ body {
   display: block;
 }
 
+.quiz-box header .time-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 3px;
+  background: #007bff;
+}
+
 section .option-list .option {
   background: aliceblue;
   border: 1px solid #84c5fe;

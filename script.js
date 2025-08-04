@@ -6,6 +6,7 @@ const quitBtn = document.querySelector(".quit");
 const continueBtn = document.querySelector(".restart");
 const option = document.querySelector(".option-list");
 const timerCount = document.querySelector(".timer-sec");
+const timerOff = document.querySelector(".time-text");
 const counterBaseLine = document.querySelector(".time-line");
 
 startBtn.addEventListener("click", () => {
@@ -40,14 +41,40 @@ const QueFetch = async function () {
       answer: q.correct_answer,
     }));
 
+    let userScore = 0;
+    let Que_count = 0;
+    let counter;
+    let counterLine = 0;
+    let countTimer = 15;
+    let widthValue = 0;
+
     const nextBtn = quizBox.querySelector(".next-btn");
     const resultBox = document.querySelector(".result-box");
 
-    const restartBtn = document.querySelector(".restart");
-    const quitBtn = document.querySelector(".quit");
+    const restartBtn = resultBox.querySelector(".buttons .restart");
+    const quitBtn = resultBox.querySelector(".buttons .quit");
 
-    // Move userScore to the correct scope
-    let userScore = 0;
+    restartBtn.addEventListener("click", () => {
+      quizBox.classList.add("quiz-box-active-box");
+      resultBox.classList.remove("result-box-active");
+      let userScore = 0;
+      let Que_count = 0;
+      let countTimer = 15;
+      let widthValue = 0;
+      queBody(Que_count);
+      clearInterval(counter);
+      setTimer(countTimer);
+      clearInterval(counterLine);
+      setTimerBaseline(widthValue);
+      nextBtn.style.display = "none";
+      timerOff.innerHTML = "Time-left";
+    });
+    quitBtn.addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    let tickIcon = `<div class="icon tick"><i class="fas fa-check"><i></div>`;
+    let crossIcon = `<div class="icon cross"><i class="fas fa-times"><i></div>`;
 
     const queBody = function (index) {
       const queText = document.querySelector(".que-text");
@@ -60,9 +87,6 @@ const QueFetch = async function () {
       let optionTag = Questions[index].options
         .map((opt, i) => `<div class="option">${opt} <span></span></div>`)
         .join("");
-
-      let tickIcon = `<div class="icon tick"><i class="fas fa-check"><i></div>`;
-      let crossIcon = `<div class="icon cross"><i class="fas fa-times"><i></div>`;
 
       let counterQue = `   <span
             ><p>${index + 1}</p>
@@ -99,7 +123,7 @@ const QueFetch = async function () {
               el.classList.add("incorrect");
               el.insertAdjacentHTML("beforeend", crossIcon);
               console.log("wrong");
-              // Also highlight the correct answer
+              // Also highlight the correct answer and automatically select correct answer
               Array.from(option.children).forEach((child) => {
                 if (child.textContent.trim() === correct_answer) {
                   child.classList.add("correct");
@@ -110,8 +134,8 @@ const QueFetch = async function () {
             // when answer is selected others cannot be selected
             Array.from(option.children).forEach((child) => {
               child.classList.add("disable");
-              nextBtn.style.display = "block";
             });
+            nextBtn.style.display = "block";
           });
         });
       }
@@ -134,12 +158,6 @@ const QueFetch = async function () {
       }
     }
 
-    let Que_count = 45;
-    let counter;
-    let counterLine = 0;
-    let countTimer = 15;
-    let widthValue = 0;
-
     // set timer for the quiz
     const setTimer = function (time) {
       const timer = function () {
@@ -148,6 +166,22 @@ const QueFetch = async function () {
         if (time < 0) {
           clearInterval(counter);
           timerCount.textContent = "0";
+
+          let correct_answer = Questions[Que_count].answer;
+          console.log(correct_answer);
+
+          Array.from(option.children).forEach((child) => {
+            if (child.textContent.trim() === correct_answer) {
+              child.classList.add("correct");
+              child.insertAdjacentHTML("beforeend", tickIcon);
+            }
+          });
+
+          Array.from(option.children).forEach((child) => {
+            child.classList.add("disable");
+            timerOff.innerHTML = "Time-Off";
+          });
+          nextBtn.style.display = "block";
         }
         let addZero = timerCount.textContent;
         if (time < 9) {
@@ -170,7 +204,7 @@ const QueFetch = async function () {
       counterLine = setInterval(timer, 29);
     };
     setTimerBaseline(0);
-
+    // Next question button
     nextBtn.addEventListener("click", () => {
       Que_count++;
       if (Que_count < Questions.length) {
@@ -179,11 +213,14 @@ const QueFetch = async function () {
         setTimer(countTimer);
         clearInterval(counterLine);
         setTimerBaseline(widthValue);
+        nextBtn.style.display = "none";
+        timerOff.innerHTML = "Time-left";
       } else {
+        clearInterval(counter);
+        clearInterval(counterLine);
         console.log("question completed");
         setAnswerFunction();
       }
-      nextBtn.style.display = "none";
     });
 
     // Render the first question

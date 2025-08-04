@@ -42,8 +42,12 @@ const QueFetch = async function () {
 
     const nextBtn = quizBox.querySelector(".next-btn");
     const resultBox = document.querySelector(".result-box");
+
     const restartBtn = document.querySelector(".restart");
     const quitBtn = document.querySelector(".quit");
+
+    // Move userScore to the correct scope
+    let userScore = 0;
 
     const queBody = function (index) {
       const queText = document.querySelector(".que-text");
@@ -74,7 +78,6 @@ const QueFetch = async function () {
       setOptionListeners();
       let correct_answer = Questions[index].answer;
       console.log(correct_answer);
-      let userScore = 0;
 
       // Separate function to set event listeners for options
       function setOptionListeners() {
@@ -118,9 +121,20 @@ const QueFetch = async function () {
       infoBox.classList.remove("info-box-active-info");
       quizBox.classList.remove("quiz-box-active-box");
       resultBox.classList.add("result-box-active");
+      const scoreText = resultBox.querySelector(".score-text");
+      if (userScore <= 30) {
+        let scoreTag = `<span>and sorry, this is poor. You got only <span>${userScore}</span> out of <span>${Questions.length}</span></span>`;
+        scoreText.innerHTML = scoreTag;
+      } else if (userScore > 30 && userScore <= 40) {
+        let scoreTag = `<span>This is very nice! You got <p>${userScore}</p> out of <p>${Questions.length}</p></span>`;
+        scoreText.innerHTML = scoreTag;
+      } else if (userScore > 40 && userScore <= 50) {
+        let scoreTag = `<span>Congratulations! You got <p>${userScore}</p> out of <p>${Questions.length}</p></span>`;
+        scoreText.innerHTML = scoreTag;
+      }
     }
 
-    let Que_count = 0;
+    let Que_count = 45;
     let counter;
     let counterLine = 0;
     let countTimer = 15;

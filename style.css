@@ -336,16 +336,18 @@ footer .next-btn:hover {
   font-weight: 500;
 }
 
-.result-box .score-text span {
+.score-text {
   display: flex;
-  margin: 10px 0;
-  font-size: 18px;
-  font-weight: 500;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2em;
+  margin-top: 20px;
 }
 
-.score-text span p {
-  font-weight: 600;
-  padding: 0 4px;
+.score-text span {
+  display: inline;
+  margin: 0 2px;
+  font-weight: bold;
 }
 
 .result-box .buttons {

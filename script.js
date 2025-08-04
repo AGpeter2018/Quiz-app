@@ -41,6 +41,9 @@ const QueFetch = async function () {
     }));
 
     const nextBtn = quizBox.querySelector(".next-btn");
+    const resultBox = document.querySelector(".result-box");
+    const restartBtn = document.querySelector(".restart");
+    const quitBtn = document.querySelector(".quit");
 
     const queBody = function (index) {
       const queText = document.querySelector(".que-text");
@@ -71,6 +74,7 @@ const QueFetch = async function () {
       setOptionListeners();
       let correct_answer = Questions[index].answer;
       console.log(correct_answer);
+      let userScore = 0;
 
       // Separate function to set event listeners for options
       function setOptionListeners() {
@@ -78,11 +82,15 @@ const QueFetch = async function () {
         optionList.forEach((el) => {
           el.addEventListener("click", (e) => {
             clearInterval(counter);
+            clearInterval(counterLine);
+
             const optionClick = e.currentTarget.textContent.trim();
             // console.log(optionClick);
             if (correct_answer === optionClick) {
               el.classList.add("correct");
               el.insertAdjacentHTML("beforeend", tickIcon);
+              userScore += 1;
+              console.log(userScore);
               console.log("correct");
             } else {
               el.classList.add("incorrect");
@@ -99,11 +107,19 @@ const QueFetch = async function () {
             // when answer is selected others cannot be selected
             Array.from(option.children).forEach((child) => {
               child.classList.add("disable");
+              nextBtn.style.display = "block";
             });
           });
         });
       }
     };
+
+    function setAnswerFunction() {
+      infoBox.classList.remove("info-box-active-info");
+      quizBox.classList.remove("quiz-box-active-box");
+      resultBox.classList.add("result-box-active");
+    }
+
     let Que_count = 0;
     let counter;
     let counterLine = 0;
@@ -143,7 +159,7 @@ const QueFetch = async function () {
 
     nextBtn.addEventListener("click", () => {
       Que_count++;
-      if (Que_count < Questions.length - 1) {
+      if (Que_count < Questions.length) {
         queBody(Que_count);
         clearInterval(counter);
         setTimer(countTimer);
@@ -151,11 +167,13 @@ const QueFetch = async function () {
         setTimerBaseline(widthValue);
       } else {
         console.log("question completed");
+        setAnswerFunction();
       }
+      nextBtn.style.display = "none";
     });
 
     // Render the first question
-    queBody(0);
+    queBody(Que_count);
   } catch (error) {
     console.error(error.message);
   }

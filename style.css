@@ -285,6 +285,7 @@ footer .total-que span p {
 }
 
 footer .next-btn {
+  display: none;
   height: 40px;
   padding: 0 13px;
   font-size: 18px;
@@ -314,6 +315,13 @@ footer .next-btn:hover {
   justify-content: space-between;
   opacity: 0;
   pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.result-box-active {
+  z-index: 5;
+  opacity: 1;
+  pointer-events: all;
   transform: translate(-50%, -50%) scale(0.9);
 }
 

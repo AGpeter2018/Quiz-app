@@ -44,7 +44,7 @@ const QueFetch = async function () {
     let userScore = 0;
     let Que_count = 0;
     let counter;
-    let counterLine = 0;
+    let counterLine;
     let countTimer = 15;
     let widthValue = 0;
 
@@ -77,6 +77,8 @@ const QueFetch = async function () {
     let crossIcon = `<div class="icon cross"><i class="fas fa-times"><i></div>`;
 
     const queBody = function (index) {
+      // Reset baseline width for each new question
+      widthValue = 0;
       const queText = document.querySelector(".que-text");
 
       const quizNum = document.querySelector(".total-que");
@@ -92,7 +94,7 @@ const QueFetch = async function () {
             ><p>${index + 1}</p>
             of
             <p>${Questions.length}</p>
-            questions</span
+            Questions</span
           >`;
 
       queText.innerHTML = queTag;
@@ -193,11 +195,14 @@ const QueFetch = async function () {
     setTimer(countTimer);
     // counter baseline
     const setTimerBaseline = function (time) {
+      // Always clear previous baseline timer
+      clearInterval(counterLine);
+      counterBaseLine.style.width = `0px`;
+      let localTime = time;
       const timer = function () {
-        time += 1;
-        counterBaseLine.style.width = `${time}px`;
-
-        if (time > 549) {
+        localTime += 1;
+        counterBaseLine.style.width = `${localTime}px`;
+        if (localTime > 549) {
           clearInterval(counterLine);
         }
       };
@@ -209,10 +214,8 @@ const QueFetch = async function () {
       Que_count++;
       if (Que_count < Questions.length) {
         queBody(Que_count);
-        clearInterval(counter);
         setTimer(countTimer);
-        clearInterval(counterLine);
-        setTimerBaseline(widthValue);
+        setTimerBaseline(0);
         nextBtn.style.display = "none";
         timerOff.innerHTML = "Time-left";
       } else {

@@ -8,7 +8,8 @@
 }
 
 body {
-  background: #007bff;
+  background: linear-gradient(rgba(0, 0, 0, 0.089), rgba(0, 0, 0, 0.014)),
+    url("./img/background-2.jpg") center/cover no-repeat;
 }
 
 .start-btn,
@@ -126,6 +127,9 @@ body {
 
 .quiz-box-active-box {
   display: block;
+  z-index: 5;
+  pointer-events: all;
+  transform: translate(-50%, -50%) scale(0.9);
 }
 
 .quiz-box header {

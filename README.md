@@ -16,16 +16,6 @@ A fun and interactive quiz web application built with **HTML**, **CSS**, and **J
 
 ---
 
-## 📸 Screenshots
-
-> Add some images/gifs of your app here if possible. Example:
-
-![Quiz Start Screen](./img/image-start.jpg)
-![Question Interface](./img/image-que.jpg)
-![Final Score](./img/image-result.jpg)
-
----
-
 ## 🛠️ Tech Stack
 
 - **HTML5** – for markup structure

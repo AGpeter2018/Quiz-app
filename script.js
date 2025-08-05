@@ -2,6 +2,7 @@
 const startBtn = document.querySelector(".start-btn");
 const infoBox = document.querySelector(".info-box");
 const quizBox = document.querySelector(".quiz-box");
+const quitBtn = document.querySelector(".quit");
 const continueBtn = document.querySelector(".restart");
 const option = document.querySelector(".option-list");
 const timerCount = document.querySelector(".timer-sec");
@@ -9,9 +10,6 @@ const timerOff = document.querySelector(".time-text");
 const counterBaseLine = document.querySelector(".time-line");
 const nextBtn = quizBox.querySelector(".next-btn");
 const resultBox = document.querySelector(".result-box");
-
-const restartBtn = resultBox.querySelector(".buttons .restart");
-const quitBtn = resultBox.querySelector(".buttons .quit");
 
 startBtn.addEventListener("click", () => {
   startBtn.style.opacity = "0";
@@ -69,6 +67,9 @@ const QueFetch = async function () {
         setAnswerFunction();
       }
     }
+
+    const restartBtn = resultBox.querySelector(".buttons .restart");
+    const quitBtn = resultBox.querySelector(".buttons .quit");
 
     restartBtn.addEventListener("click", () => {
       quizBox.classList.add("quiz-box-active-box");

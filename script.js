@@ -59,7 +59,7 @@ const QueFetch = async function () {
         clearInterval(counterLine);
         setTimerBaseline(widthValue);
         nextBtn.style.display = "none";
-        timerOff.innerHTML = "Time-left";
+        timerOff.innerHTML = "Time-Left";
       } else {
         clearInterval(counter);
         clearInterval(counterLine);
@@ -84,7 +84,7 @@ const QueFetch = async function () {
       clearInterval(counterLine);
       setTimerBaseline(widthValue);
       nextBtn.style.display = "none";
-      timerOff.innerHTML = "Time-left";
+      timerOff.innerHTML = "Time- Left";
     });
     quitBtn.addEventListener("click", () => {
       window.location.reload();

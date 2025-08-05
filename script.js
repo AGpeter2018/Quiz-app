@@ -2,12 +2,16 @@
 const startBtn = document.querySelector(".start-btn");
 const infoBox = document.querySelector(".info-box");
 const quizBox = document.querySelector(".quiz-box");
-const quitBtn = document.querySelector(".quit");
 const continueBtn = document.querySelector(".restart");
 const option = document.querySelector(".option-list");
 const timerCount = document.querySelector(".timer-sec");
 const timerOff = document.querySelector(".time-text");
 const counterBaseLine = document.querySelector(".time-line");
+const nextBtn = quizBox.querySelector(".next-btn");
+const resultBox = document.querySelector(".result-box");
+
+const restartBtn = resultBox.querySelector(".buttons .restart");
+const quitBtn = resultBox.querySelector(".buttons .quit");
 
 startBtn.addEventListener("click", () => {
   startBtn.style.opacity = "0";
@@ -44,15 +48,27 @@ const QueFetch = async function () {
     let userScore = 0;
     let Que_count = 0;
     let counter;
-    let counterLine;
+    let counterLine = 0;
     let countTimer = 15;
     let widthValue = 0;
 
-    const nextBtn = quizBox.querySelector(".next-btn");
-    const resultBox = document.querySelector(".result-box");
-
-    const restartBtn = resultBox.querySelector(".buttons .restart");
-    const quitBtn = resultBox.querySelector(".buttons .quit");
+    function nextBtnProc() {
+      Que_count++;
+      if (Que_count < Questions.length) {
+        queBody(Que_count);
+        clearInterval(counter);
+        setTimer(countTimer);
+        clearInterval(counterLine);
+        setTimerBaseline(widthValue);
+        nextBtn.style.display = "none";
+        timerOff.innerHTML = "Time-left";
+      } else {
+        clearInterval(counter);
+        clearInterval(counterLine);
+        console.log("question completed");
+        setAnswerFunction();
+      }
+    }
 
     restartBtn.addEventListener("click", () => {
       quizBox.classList.add("quiz-box-active-box");
@@ -77,8 +93,6 @@ const QueFetch = async function () {
     let crossIcon = `<div class="icon cross"><i class="fas fa-times"><i></div>`;
 
     const queBody = function (index) {
-      // Reset baseline width for each new question
-      widthValue = 0;
       const queText = document.querySelector(".que-text");
 
       const quizNum = document.querySelector(".total-que");
@@ -195,14 +209,11 @@ const QueFetch = async function () {
     setTimer(countTimer);
     // counter baseline
     const setTimerBaseline = function (time) {
-      // Always clear previous baseline timer
-      clearInterval(counterLine);
-      counterBaseLine.style.width = `0px`;
-      let localTime = time;
       const timer = function () {
-        localTime += 1;
-        counterBaseLine.style.width = `${localTime}px`;
-        if (localTime > 549) {
+        time += 1;
+        counterBaseLine.style.width = `${time}px`;
+
+        if (time > 549) {
           clearInterval(counterLine);
         }
       };
@@ -210,21 +221,8 @@ const QueFetch = async function () {
     };
     setTimerBaseline(0);
     // Next question button
-    nextBtn.addEventListener("click", () => {
-      Que_count++;
-      if (Que_count < Questions.length) {
-        queBody(Que_count);
-        setTimer(countTimer);
-        setTimerBaseline(0);
-        nextBtn.style.display = "none";
-        timerOff.innerHTML = "Time-left";
-      } else {
-        clearInterval(counter);
-        clearInterval(counterLine);
-        console.log("question completed");
-        setAnswerFunction();
-      }
-    });
+
+    nextBtn.addEventListener("click", nextBtnProc);
 
     // Render the first question
     queBody(Que_count);

@@ -8,8 +8,10 @@
 }
 
 body {
-  background: linear-gradient(rgba(0, 0, 0, 0.089), rgba(0, 0, 0, 0.014)),
-    url("./img/background-2.jpg") center/cover no-repeat;
+  background: url("./img/background-2.jpg");
+  background-size: 100rem;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .start-btn,
